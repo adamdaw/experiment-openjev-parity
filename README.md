@@ -1,6 +1,6 @@
 # OpenJev–router parity experiment
 
-On 2026-09-30, this experiment asked: does [OpenJev](https://github.com/razorback16/openjev) at commit `a938337` give the same answers as an existing Jev-compatible router when both use the same Winnow-12B llama-server, and where do their request and error handling differ? The Winnow backend at that commit is not published upstream, so the OpenJev side cannot currently be reproduced from a public commit.
+On 2026-09-30, this experiment asked: does [OpenJev](https://github.com/razorback16/openjev) at commit `a938337` give the same answers as an existing Jev-compatible router when both use the same Winnow-12B llama-server, and where do their request and error handling differ? That commit is [`a938337`](https://github.com/adamdaw/openjev/tree/a938337deda63bb5b97a24003d16b69d7e62d4e8) on the `winnow-backend` branch of Adam Daw's fork of upstream OpenJev; the Winnow backend has not been merged upstream.
 
 ## Method
 
@@ -39,6 +39,17 @@ A separate week of real-traffic observation is excluded. It was inconclusive bec
 
 Requires Python 3 and two already-running Jev-compatible HTTP services. The runner does not start or configure services.
 
+To run the OpenJev side, check out the commit that was tested and start it with the Winnow backend. The fork's README ("Winnow" section) documents the llama-server and model setup.
+
+```sh
+git clone https://github.com/adamdaw/openjev.git
+git -C openjev checkout a938337deda63bb5b97a24003d16b69d7e62d4e8
+pip install -e ./openjev
+OPENJEV_BACKEND=winnow python -m openjev
+```
+
+OpenJev listens on `http://127.0.0.1:8080` by default, so pass that as `--openjev-url`. For the baseline, use your own Jev-compatible router (see Limitations). Then run the comparison:
+
 ```sh
 python smoke.py --check-fixtures
 python smoke.py \
@@ -51,4 +62,9 @@ The same settings may be supplied through `OPENJEV_URL`, `BASELINE_URL`, and `PA
 
 ## License
 
-No license has been selected. That remains an open project-owner decision.
+- Code (`smoke.py`) is under the MIT License; see [`LICENSE`](LICENSE).
+- Data and prose (`README.md`, `data/` and `results/`) are under the Creative Commons Attribution 4.0 International License (CC BY 4.0); see [`LICENSE-CC-BY-4.0.txt`](LICENSE-CC-BY-4.0.txt).
+
+The recorded output in `results/` includes probabilities and answers produced by the Winnow-12B model. These model outputs are included so the results can be checked. This license does not change any third-party terms that apply to them.
+
+OpenJev (Apache-2.0) and the Winnow-12B model (Apache-2.0, per its model card) keep their own terms. Neither is redistributed here.
