@@ -1,6 +1,6 @@
 # OpenJev–router parity experiment
 
-On 2026-09-30, this experiment asked: does [OpenJev](https://github.com/razorback16/openjev) at commit `a938337` give the same answers as an existing Jev-compatible router when both use the same Winnow-12B llama-server, and where do their request and error handling differ? The Winnow backend at that commit is not published upstream, so the OpenJev side cannot currently be reproduced from a public commit.
+On 2026-09-30, this experiment asked: does OpenJev (upstream: [razorback16/openjev](https://github.com/razorback16/openjev)), with the Winnow backend from Adam Daw's fork at commit [`a938337`](https://github.com/adamdaw/openjev/tree/a938337deda63bb5b97a24003d16b69d7e62d4e8) (branch `winnow-backend`, not merged upstream), give the same answers as an existing Jev-compatible router when both use the same Winnow-12B llama-server, and where do their request and error handling differ?
 
 ## Method
 
@@ -39,10 +39,21 @@ A separate week of real-traffic observation is excluded. It was inconclusive bec
 
 Requires Python 3 and two already-running Jev-compatible HTTP services. The runner does not start or configure services.
 
+To run the OpenJev side, check out the commit that was tested and start it with the Winnow backend. It expects a llama-server serving Winnow-12B at `OPENJEV_UPSTREAM` (default `http://127.0.0.1:8000`); the fork's README ("Winnow" section) documents how to set that up.
+
+```sh
+git clone https://github.com/adamdaw/openjev.git
+git -C openjev checkout a938337deda63bb5b97a24003d16b69d7e62d4e8
+pip install -e ./openjev
+OPENJEV_BACKEND=winnow python -m openjev
+```
+
+OpenJev's API listens on `http://127.0.0.1:8080` by default. For the baseline, use your own Jev-compatible router (see Limitations). Then run the comparison:
+
 ```sh
 python smoke.py --check-fixtures
 python smoke.py \
-  --openjev-url http://localhost:8000 \
+  --openjev-url http://127.0.0.1:8080 \
   --baseline-url http://localhost:8001 \
   --fixtures data/requests.json
 ```
@@ -51,4 +62,9 @@ The same settings may be supplied through `OPENJEV_URL`, `BASELINE_URL`, and `PA
 
 ## License
 
-No license has been selected. That remains an open project-owner decision.
+- Code (`smoke.py`) is under the MIT License; see [`LICENSE`](LICENSE).
+- **Data and prose: CC BY 4.0** ([`LICENSE-CC-BY-4.0.txt`](LICENSE-CC-BY-4.0.txt)). Applies only to original content by Adam Daw (© 2026) in `README.md`, `data/` and `results/`. It does not apply to third-party material in those paths, including model-generated answers and probabilities in `results/`; that material keeps its own terms.
+
+The model outputs in `results/` are included so the results can be checked.
+
+OpenJev (Apache-2.0) and the Winnow-12B model (Apache-2.0, per its model card) keep their own terms. Neither is redistributed here.
