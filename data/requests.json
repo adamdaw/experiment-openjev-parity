@@ -1,0 +1,589 @@
+[
+ {
+  "name": "sample",
+  "body": {
+   "model": "any-model-name",
+   "state": "Help! My payouts have been failing for 3 days.",
+   "questions": {
+    "department": {
+     "type": "choice",
+     "instructions": "Which team should handle this?",
+     "criteria": {
+      "billing": "Payments, invoicing, refunds",
+      "technical": "Bugs, outages, integrations",
+      "sales": "Pricing, upgrades, new accounts"
+     }
+    },
+    "frustration": {
+     "type": "score",
+     "instructions": "How frustrated is the customer?",
+     "criteria": [
+      "Calm",
+      "Frustrated",
+      "Very angry"
+     ]
+    },
+    "is_urgent": {
+     "type": "noul",
+     "instructions": "Does this convey urgency?",
+     "criteria": {
+      "true": "Explicitly time-sensitive",
+      "false": "No urgency expressed"
+     }
+    }
+   }
+  }
+ },
+ {
+  "name": "gating_B023",
+  "body": {
+   "state": {
+    "shell_command": "aws s3 ls s3://fictional-widgets-artifacts/"
+   },
+   "questions": {
+    "read_only": {
+     "type": "noul",
+     "instructions": "Is this shell command read-only, meaning that running it does not modify any files, processes, system configuration or remote resources?",
+     "criteria": {
+      "true": "It only reads or displays information; local and remote state are unchanged afterwards, apart from incidental logs or caches",
+      "false": "It creates, modifies or deletes files, starts or stops processes, changes configuration, or changes remote state"
+     }
+    },
+    "destructive": {
+     "type": "noul",
+     "instructions": "Could running this shell command permanently delete, overwrite or irreversibly change data or system state, in a way that cannot easily be undone?",
+     "criteria": {
+      "true": "It deletes or overwrites data, rewrites history, destroys resources, kills work in progress, or runs unknown code that could do so",
+      "false": "Any changes are additive or easily reversible, and no existing data is lost"
+     }
+    },
+    "network_access": {
+     "type": "noul",
+     "instructions": "Does this shell command contact another machine over the network, for example downloads, API calls, remote shells, git pushes or cloud CLIs?",
+     "criteria": {
+      "true": "It sends or receives data over the network to another host",
+      "false": "It works entirely on the local machine"
+     }
+    },
+    "needs_elevated_privileges": {
+     "type": "noul",
+     "instructions": "Would this shell command need administrator or root privileges on a typical developer machine, for example sudo, writing to system directories, managing system services or raw devices?",
+     "criteria": {
+      "true": "It needs root or administrator rights to succeed",
+      "false": "An ordinary user can run it successfully in their own files and projects"
+     }
+    }
+   }
+  }
+ },
+ {
+  "name": "gating_B035",
+  "body": {
+   "state": {
+    "shell_command": "tar -czf backup.tar.gz notes/"
+   },
+   "questions": {
+    "read_only": {
+     "type": "noul",
+     "instructions": "Is this shell command read-only, meaning that running it does not modify any files, processes, system configuration or remote resources?",
+     "criteria": {
+      "true": "It only reads or displays information; local and remote state are unchanged afterwards, apart from incidental logs or caches",
+      "false": "It creates, modifies or deletes files, starts or stops processes, changes configuration, or changes remote state"
+     }
+    },
+    "destructive": {
+     "type": "noul",
+     "instructions": "Could running this shell command permanently delete, overwrite or irreversibly change data or system state, in a way that cannot easily be undone?",
+     "criteria": {
+      "true": "It deletes or overwrites data, rewrites history, destroys resources, kills work in progress, or runs unknown code that could do so",
+      "false": "Any changes are additive or easily reversible, and no existing data is lost"
+     }
+    },
+    "network_access": {
+     "type": "noul",
+     "instructions": "Does this shell command contact another machine over the network, for example downloads, API calls, remote shells, git pushes or cloud CLIs?",
+     "criteria": {
+      "true": "It sends or receives data over the network to another host",
+      "false": "It works entirely on the local machine"
+     }
+    },
+    "needs_elevated_privileges": {
+     "type": "noul",
+     "instructions": "Would this shell command need administrator or root privileges on a typical developer machine, for example sudo, writing to system directories, managing system services or raw devices?",
+     "criteria": {
+      "true": "It needs root or administrator rights to succeed",
+      "false": "An ordinary user can run it successfully in their own files and projects"
+     }
+    }
+   }
+  }
+ },
+ {
+  "name": "gating_B052",
+  "body": {
+   "state": {
+    "user_prompt": "Convert this JSON snippet to YAML: {\"a\": 1, \"b\": [2, 3]}"
+   },
+   "questions": {
+    "needs_fresh_or_external_facts": {
+     "type": "noul",
+     "instructions": "Would a good answer to this user request require current or external information that is not general knowledge and is not on the user's machine, such as today's news, live prices or availability, the latest software versions, or the contents of a specific web page or service?",
+     "criteria": {
+      "true": "Needs fresh, live or external facts: a web search, an external API, a status page, or a third-party service",
+      "false": "Can be answered from stable general knowledge, the request itself, or the user's own machine"
+     }
+    },
+    "needs_local_access": {
+     "type": "noul",
+     "instructions": "Would fulfilling this user request require access to the user's local machine, that is, reading or writing their files or running commands there?",
+     "criteria": {
+      "true": "Must read or write local files, inspect the local project or system, or run commands on the user's machine",
+      "false": "Can be fulfilled from the text of the request and general or external knowledge alone"
+     }
+    },
+    "changes_state": {
+     "type": "noul",
+     "instructions": "Would fulfilling this user request change anything, such as creating, editing or deleting files, changing system settings, or taking actions in external accounts or services?",
+     "criteria": {
+      "true": "Fulfilling it modifies files, system state, or external services (for example saving, deleting, installing, pushing, sending or booking)",
+      "false": "Fulfilling it only reads information or produces an answer in the chat"
+     }
+    }
+   }
+  }
+ },
+ {
+  "name": "gating_B055",
+  "body": {
+   "state": {
+    "shell_command": "grep -rn \"TODO\" src/"
+   },
+   "questions": {
+    "read_only": {
+     "type": "noul",
+     "instructions": "Is this shell command read-only, meaning that running it does not modify any files, processes, system configuration or remote resources?",
+     "criteria": {
+      "true": "It only reads or displays information; local and remote state are unchanged afterwards, apart from incidental logs or caches",
+      "false": "It creates, modifies or deletes files, starts or stops processes, changes configuration, or changes remote state"
+     }
+    },
+    "destructive": {
+     "type": "noul",
+     "instructions": "Could running this shell command permanently delete, overwrite or irreversibly change data or system state, in a way that cannot easily be undone?",
+     "criteria": {
+      "true": "It deletes or overwrites data, rewrites history, destroys resources, kills work in progress, or runs unknown code that could do so",
+      "false": "Any changes are additive or easily reversible, and no existing data is lost"
+     }
+    },
+    "network_access": {
+     "type": "noul",
+     "instructions": "Does this shell command contact another machine over the network, for example downloads, API calls, remote shells, git pushes or cloud CLIs?",
+     "criteria": {
+      "true": "It sends or receives data over the network to another host",
+      "false": "It works entirely on the local machine"
+     }
+    },
+    "needs_elevated_privileges": {
+     "type": "noul",
+     "instructions": "Would this shell command need administrator or root privileges on a typical developer machine, for example sudo, writing to system directories, managing system services or raw devices?",
+     "criteria": {
+      "true": "It needs root or administrator rights to succeed",
+      "false": "An ordinary user can run it successfully in their own files and projects"
+     }
+    }
+   }
+  }
+ },
+ {
+  "name": "multi_question",
+  "body": {
+   "state": [
+    {
+     "role": "user",
+     "content": "The export button does nothing in Safari, but Chrome works fine."
+    },
+    {
+     "role": "agent",
+     "content": "Thanks! Which version of Safari are you on?"
+    },
+    {
+     "role": "user",
+     "content": "17.4 on macOS. We need this for the board report tomorrow morning."
+    }
+   ],
+   "metadata": {
+    "trace": [
+     "parity",
+     1,
+     null
+    ]
+   },
+   "questions": {
+    "team": {
+     "type": "choice",
+     "instructions": {
+      "field": {
+       "name": "team"
+      },
+      "question": "Which `field` owns this?"
+     },
+     "criteria": {
+      "frontend": {
+       "what": "UI and browser issues"
+      },
+      "backend": "APIs and data",
+      "billing": null,
+      "sales": "Pricing questions",
+      "ops": [
+       "deploys",
+       "outages"
+      ]
+     }
+    },
+    "pair": {
+     "type": "choice",
+     "instructions": "Is this a bug report or a feature request?",
+     "criteria": {
+      "bug": "Something is broken",
+      "feature": "Something new is wanted"
+     }
+    },
+    "severity": {
+     "type": "score",
+     "instructions": "How severe is the issue?",
+     "criteria": [
+      {
+       "what": "Cosmetic",
+       "examples": [
+        "typo in a label"
+       ]
+      },
+      {
+       "what": "Workaround exists"
+      },
+      "Blocking; no workaround",
+      null
+     ]
+    },
+    "deadline": {
+     "type": "score",
+     "instructions": [
+      "How soon is the deadline?",
+      "Use the latest message."
+     ],
+     "criteria": [
+      "No deadline",
+      "This month",
+      "This week",
+      "Tomorrow or sooner"
+     ]
+    },
+    "browser": {
+     "type": "noul",
+     "instructions": "Is the problem specific to one browser?"
+    },
+    "angry": {
+     "type": "noul",
+     "instructions": "Is the customer angry?",
+     "criteria": {
+      "true": "Hostile or insulting"
+     }
+    },
+    "resolved": {
+     "type": "noul",
+     "instructions": null,
+     "criteria": {
+      "true": "The conversation says the issue is fixed",
+      "false": "It is still open"
+     }
+    }
+   }
+  }
+ },
+ {
+  "name": "choice_16_options",
+  "body": {
+   "state": "The invoice was addressed to the Lisbon office.",
+   "questions": {
+    "region": {
+     "type": "choice",
+     "instructions": "Which region is the customer most likely in?",
+     "criteria": {
+      "region_00": "Region number 0",
+      "region_01": "Region number 1",
+      "region_02": "Region number 2",
+      "region_03": "Region number 3",
+      "region_04": "Region number 4",
+      "region_05": "Region number 5",
+      "region_06": "Region number 6",
+      "region_07": "Region number 7",
+      "region_08": "Region number 8",
+      "region_09": "Region number 9",
+      "region_10": "Region number 10",
+      "region_11": "Region number 11",
+      "region_12": "Region number 12",
+      "region_13": "Region number 13",
+      "region_14": "Region number 14",
+      "region_15": "Region number 15"
+     }
+    }
+   }
+  }
+ },
+ {
+  "name": "choice_17_options",
+  "body": {
+   "state": "x",
+   "questions": {
+    "region": {
+     "type": "choice",
+     "instructions": "Which region is the customer most likely in?",
+     "criteria": {
+      "region_00": "Region number 0",
+      "region_01": "Region number 1",
+      "region_02": "Region number 2",
+      "region_03": "Region number 3",
+      "region_04": "Region number 4",
+      "region_05": "Region number 5",
+      "region_06": "Region number 6",
+      "region_07": "Region number 7",
+      "region_08": "Region number 8",
+      "region_09": "Region number 9",
+      "region_10": "Region number 10",
+      "region_11": "Region number 11",
+      "region_12": "Region number 12",
+      "region_13": "Region number 13",
+      "region_14": "Region number 14",
+      "region_15": "Region number 15",
+      "region_16": "Region number 16"
+     }
+    }
+   }
+  }
+ },
+ {
+  "name": "single_option_and_noul",
+  "body": {
+   "state": {
+    "ticket": "Refund requested for order 4411."
+   },
+   "questions": {
+    "only": {
+     "type": "choice",
+     "instructions": "Pick",
+     "criteria": {
+      "refunds": "The only queue"
+     }
+    },
+    "refund": {
+     "type": "noul",
+     "instructions": "Is a refund requested?"
+    }
+   }
+  }
+ },
+ {
+  "name": "score_10_levels",
+  "body": {
+   "state": "The customer rated the service seven out of ten.",
+   "questions": {
+    "rating": {
+     "type": "score",
+     "instructions": "What rating did the customer give?",
+     "criteria": [
+      "1 out of ten",
+      "2 out of ten",
+      "3 out of ten",
+      "4 out of ten",
+      "5 out of ten",
+      "6 out of ten",
+      "7 out of ten",
+      "8 out of ten",
+      "9 out of ten",
+      "10 out of ten"
+     ]
+    }
+   }
+  }
+ },
+ {
+  "name": "unicode_and_markup",
+  "body": {
+   "state": {
+    "note": "Café <b>closed</b> — naïve 日本 🙂 & \"quoted\"",
+    "tags": [
+     "ünïcode",
+     "<tag>"
+    ]
+   },
+   "questions": {
+    "closed": {
+     "type": "noul",
+     "instructions": "Is the café described as `closed`?",
+     "criteria": {
+      "true": "Yes <definitely>",
+      "false": null
+     }
+    },
+    "lang": {
+     "type": "choice",
+     "instructions": "Which script appears besides Latin?",
+     "criteria": {
+      "japanese": "日本語",
+      "cyrillic": "Кириллица",
+      "none": null
+     }
+    }
+   }
+  }
+ },
+ {
+  "name": "numbers",
+  "body": {
+   "state": {
+    "amount": 12840.0,
+    "ratio": 0.1,
+    "tiny": 1e-07,
+    "huge": 1e+21,
+    "big_int": 18446744073709551616,
+    "neg_zero": -0.0,
+    "count": 7
+   },
+   "questions": {
+    "large": {
+     "type": "noul",
+     "instructions": {
+      "threshold": 10000,
+      "question": "Is `amount` above `threshold`?"
+     }
+    },
+    "bucket": {
+     "type": "choice",
+     "instructions": "Which bucket fits the amount?",
+     "criteria": {
+      "small": {
+       "max": 1000
+      },
+      "medium": {
+       "max": 10000.0
+      },
+      "large": {
+       "min": 10000.0
+      }
+     }
+    }
+   }
+  }
+ },
+ {
+  "name": "twenty_questions_batched",
+  "body": {
+   "state": "Export fails in Safari (number 7); Chrome works.",
+   "questions": {
+    "n0": {
+     "type": "noul",
+     "instructions": "Does the text mention the number 0?"
+    },
+    "n1": {
+     "type": "noul",
+     "instructions": "Does the text mention the number 1?"
+    },
+    "n2": {
+     "type": "noul",
+     "instructions": "Does the text mention the number 2?"
+    },
+    "n3": {
+     "type": "noul",
+     "instructions": "Does the text mention the number 3?"
+    },
+    "n4": {
+     "type": "noul",
+     "instructions": "Does the text mention the number 4?"
+    },
+    "n5": {
+     "type": "noul",
+     "instructions": "Does the text mention the number 5?"
+    },
+    "n6": {
+     "type": "noul",
+     "instructions": "Does the text mention the number 6?"
+    },
+    "n7": {
+     "type": "noul",
+     "instructions": "Does the text mention the number 7?"
+    },
+    "n8": {
+     "type": "noul",
+     "instructions": "Does the text mention the number 8?"
+    },
+    "n9": {
+     "type": "noul",
+     "instructions": "Does the text mention the number 9?"
+    },
+    "n10": {
+     "type": "noul",
+     "instructions": "Does the text mention the number 10?"
+    },
+    "n11": {
+     "type": "noul",
+     "instructions": "Does the text mention the number 11?"
+    },
+    "n12": {
+     "type": "noul",
+     "instructions": "Does the text mention the number 12?"
+    },
+    "n13": {
+     "type": "noul",
+     "instructions": "Does the text mention the number 13?"
+    },
+    "n14": {
+     "type": "noul",
+     "instructions": "Does the text mention the number 14?"
+    },
+    "n15": {
+     "type": "noul",
+     "instructions": "Does the text mention the number 15?"
+    },
+    "n16": {
+     "type": "noul",
+     "instructions": "Does the text mention the number 16?"
+    },
+    "n17": {
+     "type": "noul",
+     "instructions": "Does the text mention the number 17?"
+    },
+    "n18": {
+     "type": "noul",
+     "instructions": "Does the text mention the number 18?"
+    },
+    "n19": {
+     "type": "noul",
+     "instructions": "Does the text mention the number 19?"
+    }
+   }
+  }
+ },
+ {
+  "name": "prompt_too_long",
+  "body": {
+   "state": "word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word ",
+   "questions": {
+    "urgent": {
+     "type": "noul",
+     "instructions": "Urgent?"
+    }
+   }
+  }
+ },
+ {
+  "name": "invalid_missing_state",
+  "body": {
+   "questions": {
+    "q": {
+     "type": "noul",
+     "instructions": "x"
+    }
+   }
+  }
+ }
+]
