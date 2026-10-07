@@ -1,0 +1,36 @@
+parity/sample                openjev 200  1.04s | router 200  1.00s | top-answer diffs: none
+parity/gating_B023           openjev 200  1.74s | router 200  1.70s | top-answer diffs: none
+parity/gating_B035           openjev 200  1.73s | router 200  1.71s | top-answer diffs: none
+parity/gating_B052           openjev 200  1.46s | router 200  1.41s | top-answer diffs: none
+parity/gating_B055           openjev 200  1.73s | router 200  1.69s | top-answer diffs: none
+parity/multi_question        openjev 422  0.00s | router 200  3.07s
+parity/choice_16_options     openjev 200  0.73s | router 200  0.68s | top-answer diffs: none
+parity/choice_17_options     openjev 200  0.74s | router 200  0.70s | top-answer diffs: none
+parity/single_option_and_noul openjev 200  0.33s | router 200  0.32s | top-answer diffs: none
+parity/score_10_levels       openjev 200  0.47s | router 200  0.46s | top-answer diffs: none
+parity/unicode_and_markup    openjev 200  0.83s | router 200  0.80s | top-answer diffs: none
+parity/numbers               openjev 200  0.96s | router 200  0.94s | top-answer diffs: none
+parity/twenty_questions_batched openjev 200  6.43s | router 200  6.20s | top-answer diffs: none
+parity/prompt_too_long       openjev 400  0.03s | router 422  0.02s
+parity/invalid_missing_state openjev 422  0.00s | router 422  0.00s
+route/0/2opt                 openjev 200  0.98s | router 200  0.95s | top-answer diffs: none
+route/0/3opt                 openjev 200  0.99s | router 200  0.95s | top-answer diffs: none
+route/0/4opt                 openjev 200  1.05s | router 200  1.01s | top-answer diffs: none
+route/0/5opt                 openjev 200  1.07s | router 200  1.02s | top-answer diffs: none
+route/1/2opt                 openjev 200  0.98s | router 200  0.94s | top-answer diffs: none
+route/1/3opt                 openjev 200  0.99s | router 200  0.95s | top-answer diffs: none
+route/1/4opt                 openjev 200  1.05s | router 200  1.00s | top-answer diffs: none
+route/1/5opt                 openjev 200  1.06s | router 200  1.02s | top-answer diffs: none
+route/2/2opt                 openjev 200  1.00s | router 200  0.96s | top-answer diffs: none
+route/2/3opt                 openjev 200  1.05s | router 200  1.01s | top-answer diffs: none
+route/2/4opt                 openjev 200  1.06s | router 200  1.02s | top-answer diffs: none
+route/2/5opt                 openjev 200  1.08s | router 200  1.04s | top-answer diffs: none
+route/3/2opt                 openjev 200  1.01s | router 200  0.97s | top-answer diffs: none
+route/3/3opt                 openjev 200  1.07s | router 200  1.03s | top-answer diffs: none
+route/3/4opt                 openjev 200  1.08s | router 200  1.06s | top-answer diffs: none
+route/3/5opt                 openjev 200  1.12s | router 200  1.08s | top-answer diffs: none
+64opt/db                     openjev 200  3.35s | router 500  0.94s
+64opt/auth                   openjev 200  3.39s | router 500  0.95s
+jevbench-like                openjev 200  1.52s | router 200  1.44s | top-answer diffs: none
+
+questions compared: 98; same top answer: 98; largest probability gap: 0.0106
